@@ -1,0 +1,29 @@
+{
+  "name": "Ruby",
+  "image": "mcr.microsoft.com/devcontainers/ruby:latest",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "shopify.ruby-lsp"
+      ],
+    }
+  },
+
+  // "name": "Rust",
+  // "image": "mcr.microsoft.com/devcontainers/rust:latest",
+  // "customizations": {
+  //   "vscode": {
+  //     "extensions": [
+  //       "rust-lang.rust-analyzer"
+  //     ],
+  //   }
+  // },
+
+
+  "workspaceMount": "", //selinux
+  "runArgs": [
+    "--userns=keep-id", //may be needed for docker / rootful podman
+    "--volume=${localWorkspaceFolder}:/workspaces/${localWorkspaceFolderBasename}:z" //selinux
+  ],
+  "containerUser": "vscode",
+}
