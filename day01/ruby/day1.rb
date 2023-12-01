@@ -1,12 +1,6 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'bundler/inline'
-
-gemfile do
-  source 'https://rubygems.org'
-end
-
 # Input is
 input = ARGF.read.split("\n")
 

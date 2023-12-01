@@ -9,17 +9,6 @@
     }
   },
 
-  // "name": "Rust",
-  // "image": "mcr.microsoft.com/devcontainers/rust:latest",
-  // "customizations": {
-  //   "vscode": {
-  //     "extensions": [
-  //       "rust-lang.rust-analyzer"
-  //     ],
-  //   }
-  // },
-
-
   "workspaceMount": "", //selinux
   "runArgs": [
     "--userns=keep-id", //may be needed for docker / rootful podman
