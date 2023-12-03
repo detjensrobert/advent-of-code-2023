@@ -1,0 +1,55 @@
+#!/bin/bash
+
+set -eux
+
+if [ -z "$1" ] ; then
+  echo "usage: $0 <day>"
+  exit 1
+fi
+
+
+DAY=$(printf '%02d' $1)
+DIR=day$DAY
+
+cargo new $DIR
+cat > $DIR/src/main.rs <<RS
+use std::env;
+use std::fs;
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+    assert!(args.len() >= 2, "no input given!");
+
+    let infile = fs::read_to_string(&args[1]).unwrap();
+    let lines: Vec<&str> = infile.split_terminator("\n").collect();
+
+    let input = parse(&lines);
+
+    part_one(&input);
+    part_two(&input);
+}
+
+
+fn parse(lines: &[&str]) -> Vec<&str> {
+    return lines
+}
+
+
+fn part_one(input: &[&str]) {
+    println!("Part 1: {}", 0xf00);
+}
+
+
+fn part_two(input: &[&str]) {
+    println!("Part 2: {}", 0xf00);
+}
+
+RS
+
+
+tomlq -i -t '.workspace.members += ["'$DIR'"]' Cargo.toml
+
+(
+  cd $DIR
+  aoc download --day $DAY
+)
