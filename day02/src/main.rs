@@ -71,7 +71,7 @@ fn parse(lines: &[&str]) -> Vec<Vec<RGB>> {
 // Determine which games would have been possible if the bag had been loaded
 // with only 12 red cubes, 13 green cubes, and 14 blue cubes.
 // What is the sum of the IDs of those games?
-fn part_one(input: &Vec<Vec<RGB>>) {
+fn part_one(input: &[Vec<RGB>]) {
     // squash games into maximum occurences of each color
     let maxs = input.iter().map(|game| RGB {
         r: game.iter().map(|set| set.r).max().unwrap(),
@@ -100,8 +100,7 @@ fn part_one(input: &Vec<Vec<RGB>>) {
 
 // Find the product of the minimum possible cube counts for each game?
 // What is the sum of those products?
-#[allow(unused)]
-fn part_two(input: &Vec<Vec<RGB>>) {
+fn part_two(input: &[Vec<RGB>]) {
     // squash games into maximum occurences of each color
     let maxs = input.iter().map(|game| RGB {
         r: game.iter().map(|set| set.r).max().unwrap(),
@@ -110,9 +109,7 @@ fn part_two(input: &Vec<Vec<RGB>>) {
     });
 
     // find product of those
-    let  products = maxs.map(|m|
-        m.r * m.g * m.b
-    );
+    let products = maxs.map(|m| m.r * m.g * m.b);
 
     println!("Part 2: {}", products.sum::<usize>());
 }
