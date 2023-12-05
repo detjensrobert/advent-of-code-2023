@@ -16,6 +16,8 @@ cat > $DIR/src/main.rs <<RS
 use std::env;
 use std::fs;
 
+type Input = &str
+
 fn main() {
     let args: Vec<String> = env::args().collect();
     assert!(args.len() >= 2, "no input given!");
@@ -30,20 +32,19 @@ fn main() {
 }
 
 
-fn parse(lines: &[&str]) -> Vec<&str> {
-    return lines
+fn parse(lines: &[&str]) -> Vec<Input> {
+    return lines;
 }
 
 
-fn part_one(input: &[&str]) {
+fn part_one(input: &[Input]) {
     println!("Part 1: {}", 0xf00);
 }
 
 
-fn part_two(input: &[&str]) {
+fn part_two(input: &[Input]) {
     println!("Part 2: {}", 0xf00);
 }
-
 RS
 
 
@@ -52,4 +53,5 @@ tomlq -i -t '.workspace.members += ["'$DIR'"]' Cargo.toml
 (
   cd $DIR
   aoc download --day $DAY
+  touch test
 )
