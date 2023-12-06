@@ -81,4 +81,4 @@ Answer:
 
 Although it hasn't changed, you can still [get your puzzle input](6/input).
 
-You can also [Shareon [Twitter](https://twitter.com/intent/tweet?text=I%27ve+completed+Part+One+of+%22Wait+For+It%22+%2D+Day+6+%2D+Advent+of+Code+2023&url=https%3A%2F%2Fadventofcode%2Ecom%2F2023%2Fday%2F6&related=ericwastl&hashtags=AdventOfCode) [Mastodon](javascript:void(0);)] this puzzle.
+You can also [Share on [Twitter](https://twitter.com/intent/tweet?text=I%27ve+completed+Part+One+of+%22Wait+For+It%22+%2D+Day+6+%2D+Advent+of+Code+2023&url=https%3A%2F%2Fadventofcode%2Ecom%2F2023%2Fday%2F6&related=ericwastl&hashtags=AdventOfCode) [Mastodon](javascript:void(0);)] this puzzle.

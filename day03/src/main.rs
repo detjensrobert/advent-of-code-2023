@@ -2,7 +2,7 @@ use std::collections::HashSet;
 use std::env;
 use std::fs;
 
-use colored::Colorize;
+// use colored::Colorize;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -21,7 +21,7 @@ fn main() {
 
 type Point = (usize, usize);
 
-// What is the sum of part numbers next to symbols (king adjaceny)?
+// What is the sum of part numbers next to symbols (king adjacency)?
 fn part_one(schematic: &Vec<Vec<char>>) {
     let mut parts: Vec<Point> = Vec::new();
 
@@ -117,6 +117,7 @@ fn part_one(schematic: &Vec<Vec<char>>) {
 }
 
 
+#[allow(unused)]
 fn part_two(schematic: &Vec<Vec<char>>) {
 
     println!("Part 2: {}", 0);

@@ -58,11 +58,11 @@ fn part_two(input: &[Race]) {
 
     let big_time = times
         .iter()
-        .fold(String::new(), |acc, t| acc + &String::from(&t.to_string()))
+        .fold(String::new(), |acc, t| acc + &t.to_string())
         .parse::<isize>().unwrap();
     let big_record = records
         .iter()
-        .fold(String::new(), |acc, t| acc + &String::from(&t.to_string()))
+        .fold(String::new(), |acc, t| acc + &t.to_string())
         .parse::<isize>().unwrap();
 
     let winning_times = (1..big_time).into_iter()
