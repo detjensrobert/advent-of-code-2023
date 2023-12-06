@@ -41,7 +41,7 @@ fn part_one(input: &[Input]) {
     println!("Part 1: {}", 0);
 }
 
-#[warn(unused_variables)]
+#[allow(unused)]
 fn part_two(input: &[Input]) {
     println!("Part 2: {}", 0);
 }
