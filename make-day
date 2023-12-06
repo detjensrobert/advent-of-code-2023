@@ -16,7 +16,7 @@ cat > $DIR/src/main.rs <<RS
 use std::env;
 use std::fs;
 
-type Input = &str
+type Input = &str;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -33,17 +33,17 @@ fn main() {
 
 
 fn parse(lines: &[&str]) -> Vec<Input> {
-    return lines;
+    return lines.to_vec();
 }
 
 
 fn part_one(input: &[Input]) {
-    println!("Part 1: {}", 0xf00);
+    println!("Part 1: {}", 0);
 }
 
-
+#[warn(unused_variables)]
 fn part_two(input: &[Input]) {
-    println!("Part 2: {}", 0xf00);
+    println!("Part 2: {}", 0);
 }
 RS
 
