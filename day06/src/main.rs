@@ -33,22 +33,26 @@ fn parse(lines: &[&str]) -> Vec<Race> {
 // What is the product of the number of ways you could beat the record in each race?
 fn part_one(input: &[Race]) {
     // this is a quadratic equation! -(x - 0)(x - time)
-    // find roots, plot, and filter for times above the target
+    // to find times greater than the record, sub record from the eqn
+    // positive times are above the record
+    // so: -(x - 0)(x - Time) - Record == -x^2 + (Time)x - Record
+    // find roots of this, and count integers between
 
-    let winning_times: Vec<Vec<isize>> = input
+    // per-race count of winning solutions
+    let winning_counts: Vec<isize> = input
         .iter()
-        .map(|(time, record)|
-            // find times faster than
-            (1..*time).into_iter()
-                // roots are no button (0,0) and all button (time, 0)
-                .map(|x| -1 * (x - 0) * (x - time))
-                .filter(|dist| dist > record )
-                .collect::<Vec<isize>>())
+        .map(|(time, record)|{
+            // add extra bit to record time to force greater instead of equal
+            let (a, b, c) = (-1_f32, *time as f32, -(*record as f32 + 0.1));
+
+            let quad_p = (-b + (b*b - 4_f32*a*c).sqrt()) / (2_f32 * a);
+            let quad_m = (-b - (b*b - 4_f32*a*c).sqrt()) / (2_f32 * a);
+
+            return (quad_m.floor() - quad_p.ceil()) as isize + 1;
+        })
         .collect();
 
-    // count and product the number of winning times
-    let winning_counts = winning_times.iter().map(|r| r.len());
-    println!("Part 1: {}", winning_counts.product::<usize>());
+    println!("Part 1: {}", winning_counts.iter().product::<isize>());
 }
 
 // This time, theres only one race (concat all the numbers). How many ways ways can this be beat?
@@ -65,11 +69,13 @@ fn part_two(input: &[Race]) {
         .fold(String::new(), |acc, t| acc + &t.to_string())
         .parse::<isize>().unwrap();
 
-    let winning_times = (1..big_time).into_iter()
-        // roots are no button (0,0) and all button (time, 0)
-        .map(|x| -1 * (x - 0) * (x - big_time))
-        .filter(|dist| dist > &big_record)
-        .collect::<Vec<isize>>();
+    // add extra bit to record time to force greater instead of equal
+    let (a, b, c) = (-1_f32, big_time as f32, -(big_record as f32 + 0.1));
 
-    println!("Part 2: {}", winning_times.len());
+    let quad_p = (-b + (b*b - 4_f32*a*c).sqrt()) / (2_f32 * a);
+    let quad_m = (-b - (b*b - 4_f32*a*c).sqrt()) / (2_f32 * a);
+
+    let winning_count = (quad_m.floor() - quad_p.ceil()) as isize + 1;
+
+    println!("Part 2: {}", winning_count);
 }
