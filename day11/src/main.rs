@@ -30,34 +30,40 @@ fn parse(lines: &[&str]) -> Grid<bool> {
     return universe;
 }
 
-fn expand(universe: &Grid<bool>) -> Grid<bool> {
-    let mut new_univ = universe.to_owned();
-
-    // expand empty rows
-    let empty_rows: Vec<usize> = new_univ
+fn empty_rows(universe: &Grid<bool>) -> Vec<usize> {
+    universe
         .iter_rows()
         .enumerate()
         .filter_map(|(i, r)| match r.to_owned().any(|g| *g) {
             true => None,
             false => Some(i),
         })
-        .collect();
-    // go backwards so no need to adjust index for newly inserted
-    for r in empty_rows.into_iter().rev() {
-        new_univ.insert_row(r, vec![false; new_univ.cols()]);
-    }
+        .collect()
+}
 
-    // expand any cols
-    let empty_cols: Vec<usize> = new_univ
+fn empty_cols(universe: &Grid<bool>) -> Vec<usize> {
+    universe
         .iter_cols()
         .enumerate()
         .filter_map(|(i, c)| match c.to_owned().any(|g| *g) {
             true => None,
             false => Some(i),
         })
-        .collect();
+        .collect()
+}
+
+fn expand(universe: &Grid<bool>) -> Grid<bool> {
+    let mut new_univ = universe.to_owned();
+
+    // expand empty rows
     // go backwards so no need to adjust index for newly inserted
-    for c in empty_cols.into_iter().rev() {
+    for r in empty_rows(&new_univ).into_iter().rev() {
+        new_univ.insert_row(r, vec![false; new_univ.cols()]);
+    }
+
+    // expand any cols
+    // go backwards so no need to adjust index for newly inserted
+    for c in empty_cols(&new_univ).into_iter().rev() {
         new_univ.insert_col(c, vec![false; new_univ.rows()]);
     }
 
@@ -97,65 +103,43 @@ fn part_one(universe: &Grid<bool>) {
     println!("Part 1: {}", distances.iter().sum::<isize>());
 }
 
-fn expand_n(universe: &Grid<bool>, factor: usize) -> Grid<bool> {
-    let mut new_univ = universe.to_owned();
-
-    // expand empty rows
-    let empty_rows: Vec<usize> = new_univ
-        .iter_rows()
-        .enumerate()
-        .filter_map(|(i, r)| match r.to_owned().any(|g| *g) {
-            true => None,
-            false => Some(i),
-        })
-        .collect();
-    // go backwards so no need to adjust index for newly inserted
-    for r in empty_rows.into_iter().rev() {
-        for _ in (1..factor) {
-            new_univ.insert_row(r, vec![false; new_univ.cols()]);
-        }
+fn tsort<T>(pair: (T, T)) -> (T, T)
+where
+    T: PartialOrd,
+{
+    if pair.0 <= pair.1 {
+        pair
+    } else {
+        (pair.1, pair.0)
     }
-
-    // expand any cols
-    let empty_cols: Vec<usize> = new_univ
-        .iter_cols()
-        .enumerate()
-        .filter_map(|(i, c)| match c.to_owned().any(|g| *g) {
-            true => None,
-            false => Some(i),
-        })
-        .collect();
-    // go backwards so no need to adjust index for newly inserted
-    for c in empty_cols.into_iter().rev() {
-        for _ in (1..factor) {
-            new_univ.insert_col(c, vec![false; new_univ.rows()]);
-        }
-    }
-
-    return new_univ;
 }
 
 // now expand 1_000_000 times!!!
 fn part_two(universe: &Grid<bool>) {
-    // let expanded = expand_n(universe, 100);
-    let expanded = expand_n(universe, 1_000_000);
-
     // pull out all galaxies
-    let galaxies: Vec<(usize, usize)> = expanded
+    let galaxies: Vec<(usize, usize)> = universe
         .indexed_iter()
         .filter_map(|(coords, c)| if *c { Some(coords) } else { None })
         .collect();
 
-    let distances: Vec<isize> = galaxies
+    // find all emptys
+    let (empty_rows, empty_cols) = (empty_rows(universe), empty_cols(universe));
+
+    let distances: Vec<usize> = galaxies
         .into_iter()
         .combinations(2)
         .map(|pair| {
             let [a, b] = pair[0..2] else { unreachable!() };
-            (a.0 as isize - b.0 as isize).abs() + (a.1 as isize - b.1 as isize).abs()
+            let (x, y) = (tsort((a.0, b.0)), tsort((a.1, b.1)));
+
+            let erows_crossed = empty_rows.iter().filter(|e| **e > x.0 && **e < x.1).count();
+            let ecols_crossed = empty_cols.iter().filter(|e| **e > y.0 && **e < y.1).count();
+
+            let expansion = 1_000_000 - 1; // -1 for the existing empty row
+
+            (x.1 - x.0 + erows_crossed * expansion) + (y.1 - y.0 + ecols_crossed * expansion)
         })
         .collect();
 
-    // dbg!(&distances);
-
-    println!("Part 2: {}", distances.iter().sum::<isize>());
+    println!("Part 2: {}", distances.iter().sum::<usize>());
 }
